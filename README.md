@@ -2,6 +2,8 @@
 
 Sample demo application for the [@gira-de/svelte-undo](https://github.com/gira-de/svelte-undo) library
 
+[Demo](https://gira-de.github.io/svelte-undo-example/)
+
 ## Build and Run
 
 ```bash
