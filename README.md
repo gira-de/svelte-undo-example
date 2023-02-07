@@ -2,7 +2,9 @@
 
 Sample demo application for the [@gira-de/svelte-undo](https://github.com/gira-de/svelte-undo) library
 
-[Demo](https://gira-de.github.io/svelte-undo-example/)
+[Open Demo](https://gira-de.github.io/svelte-undo-example/)
+
+[Open in StackBlitz](https://stackblitz.com/github/gira-de/svelte-undo-example/)
 
 ## Build and Run
 
