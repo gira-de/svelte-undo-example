@@ -27,7 +27,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build release
-        run: pnpm run build --base /svelte-undo-examples/
+        run: pnpm run build --base /svelte-undo-example/
 
       - name: Upload build artifact
         uses: actions/upload-artifact@master
