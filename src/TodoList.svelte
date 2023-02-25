@@ -21,7 +21,7 @@
 
 <script lang="ts">
   import '@fontsource/material-icons';
-  import { undoStackStore, TransactionCtrl } from '@gira-de/svelte-undo';
+  import { undoStack, transactionCtrl } from '@gira-de/svelte-undo';
   import { writable } from 'svelte/store';
   import type { Writable } from 'svelte/store';
 
@@ -40,57 +40,58 @@
 
   function addDraftItem() {
     newItem.timeCreated = Date.now();
-    const itemsDraft = transactionCtrl.getDraft(itemsStore);
+    const itemsDraft = transaction.draft(itemsStore);
     itemsDraft[newItem.id] = newItem;
-    transactionCtrl.commit(`Todo item ${newItem.id} added`);
+    transaction.commit(`Todo item ${newItem.id} added`);
     newItem = newTodoItem();
   }
 
   function setItemText(item: TodoItem, text: string) {
-    const itemsDraft = transactionCtrl.getDraft(itemsStore);
+    const itemsDraft = transaction.draft(itemsStore);
     itemsDraft[item.id].text = text;
-    transactionCtrl.commit(`Todo item ${item.id} updated`);
+    transaction.commit(`Todo item ${item.id} updated`);
   }
 
   function completeItem(item: TodoItem) {
-    const itemsDraft = transactionCtrl.getDraft(itemsStore);
+    const itemsDraft = transaction.draft(itemsStore);
     itemsDraft[item.id].timeCompleted = Date.now();
-    transactionCtrl.commit(`Todo item ${item.id} completed`);
+    transaction.commit(`Todo item ${item.id} completed`);
   }
 
   function openItem(item: TodoItem) {
-    const itemsDraft = transactionCtrl.getDraft(itemsStore);
+    const itemsDraft = transaction.draft(itemsStore);
     itemsDraft[item.id].timeCompleted = 0;
-    transactionCtrl.commit(`Todo item ${item.id} opened`);
+    transaction.commit(`Todo item ${item.id} opened`);
   }
 
   function removeItem(item: TodoItem) {
-    const itemsDraft = transactionCtrl.getDraft(itemsStore);
+    const itemsDraft = transaction.draft(itemsStore);
     delete itemsDraft[item.id];
-    transactionCtrl.commit(`Todo item ${item.id} removed`);
+    transaction.commit(`Todo item ${item.id} removed`);
   }
 
   // undo stack
 
-  const undoStack = undoStackStore('init');
-  const transactionCtrl = new TransactionCtrl(undoStack, 'init');
+  const myUndoStack = undoStack('init');
+  const transaction = transactionCtrl(myUndoStack);
 </script>
 
 <div class="content">
   <sidebar>
     <h1>Undo Stack</h1>
-    <button on:click={undoStack.undo} disabled={!$undoStack.canUndo}
+    <button on:click={myUndoStack.undo} disabled={!$myUndoStack.canUndo}
       >Undo</button
     >
-    <button on:click={undoStack.redo} disabled={!$undoStack.canRedo}
+    <button on:click={myUndoStack.redo} disabled={!$myUndoStack.canRedo}
       >Redo</button
     >
     <ul class="undo-stack">
-      {#each $undoStack.actions.slice().reverse() as undoAction}
+      {#each $myUndoStack.actions.slice().reverse() as undoAction}
         <li
-          class:redo={undoAction.seqNbr > $undoStack.seqNbr}
-          class:active={undoAction.seqNbr === $undoStack.seqNbr}
-          on:click={() => undoStack.goto(undoAction.seqNbr)}
+          class:redo={undoAction.seqNbr > $myUndoStack.selectedAction.seqNbr}
+          class:active={undoAction.seqNbr ===
+            $myUndoStack.selectedAction.seqNbr}
+          on:click={() => myUndoStack.goto(undoAction.seqNbr)}
           on:keydown
         >
           {undoAction.msg}
