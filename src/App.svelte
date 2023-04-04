@@ -1,5 +1,5 @@
 <script lang="ts">
-  import TodoList from './TodoList.svelte';
+  import Board from './Board.svelte';
 </script>
 
-<TodoList />
+<Board />
