@@ -58,47 +58,76 @@
   // undo stack
   const myUndoStack = undoStack('board created');
   const transaction = transactionCtrl(myUndoStack);
+
+  function snapshotRoundtrip() {
+    const snapshot = myUndoStack.createSnapshot({
+      "taskStore": tasksStore
+    })
+    console.log(JSON.stringify(snapshot))
+    myUndoStack.loadSnapshot(snapshot, {
+      "taskStore": tasksStore
+    })
+    alert('Undo stack was saved to a snapshot, and then restored from the snapshot')
+  }
+
+  function clearUndo() {
+    myUndoStack.clearUndo();
+  }
+
+  function clearRedo() {
+    myUndoStack.clearRedo();
+  }
 </script>
 
 <div class="layout">
   <sidebar>
-    <menu>
-      Undo Steps:
-      <div>
-        <button
-          class="icon"
-          on:click={myUndoStack.undo}
-          disabled={!$myUndoStack.canUndo}>undo</button
-        >
-        <button
-          class="icon"
-          on:click={myUndoStack.redo}
-          disabled={!$myUndoStack.canRedo}>redo</button
-        >
-      </div>
-    </menu>
+    <div>
+      <menu>
+        Undo Steps:
+        <div>
+          <button
+            class="icon"
+            on:click={myUndoStack.undo}
+            disabled={!$myUndoStack.canUndo}>undo</button
+          >
+          <button
+            class="icon"
+            on:click={myUndoStack.redo}
+            disabled={!$myUndoStack.canRedo}>redo</button
+          >
+        </div>
+      </menu>
 
-    <ul class="undo-steps">
-      {#each $myUndoStack.actions as undoAction}
-        {@const isUndoStep =
-          undoAction.seqNbr < $myUndoStack.selectedAction.seqNbr}
-        {@const isRedoStep =
-          undoAction.seqNbr > $myUndoStack.selectedAction.seqNbr}
-        {@const isCurrentStep =
-          undoAction.seqNbr === $myUndoStack.selectedAction.seqNbr}
-        <li
-          class:isRedoStep
-          class:isCurrentStep
-          on:click={() => myUndoStack.goto(undoAction.seqNbr)}
-          on:keydown
-        >
-          <span class="icon">
-            {isUndoStep ? 'undo' : isRedoStep ? 'redo' : 'check'}
-          </span>
-          {undoAction.msg}
-        </li>
-      {/each}
-    </ul>
+      <ul class="undo-steps">
+        {#each $myUndoStack.actions as undoAction}
+          {@const isUndoStep =
+            undoAction.seqNbr < $myUndoStack.selectedAction.seqNbr}
+          {@const isRedoStep =
+            undoAction.seqNbr > $myUndoStack.selectedAction.seqNbr}
+          {@const isCurrentStep =
+            undoAction.seqNbr === $myUndoStack.selectedAction.seqNbr}
+          <li
+            class:isRedoStep
+            class:isCurrentStep
+            on:click={() => myUndoStack.goto(undoAction.seqNbr)}
+            on:keydown
+          >
+            <div>
+              <span class="icon">
+                {isUndoStep ? 'undo' : isRedoStep ? 'redo' : 'check'}
+              </span>
+              {`${undoAction.msg} (${undoAction.seqNbr})`}
+            </div>
+          </li>
+        {/each}
+      </ul>
+    </div>
+
+    <div class="commands">
+      <button on:click={snapshotRoundtrip}>Create a snapshot and then load it again</button>
+      <button on:click={clearUndo}>clearUndo</button>
+      <button on:click={clearRedo}>clearRedo</button>
+    </div>
   </sidebar>
 
   <div>
@@ -161,6 +190,13 @@
     display: grid;
     grid-template-columns: 1fr 3fr;
     gap: 2rem;
+    height: 100%;
+  }
+
+  sidebar {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   menu {
@@ -169,6 +205,13 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  div.commands {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
   }
 
   .columns {
@@ -217,8 +260,8 @@
   }
 
   ul.undo-steps li {
-    display: grid;
-    grid-template-columns: auto 1fr;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     gap: 0.5rem;
     font-size: 0.8rem;

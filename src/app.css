@@ -1,5 +1,20 @@
+html, body {
+  height: 98%;
+  width: 98%;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  padding: 2%;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 h1 {
@@ -12,7 +27,7 @@ h1 {
   font-family: 'Material Icons';
 }
 
-button {
+button.icon {
   padding: 0.2rem 0.5rem;
   font-size: 1.2rem;
   border: none;
@@ -20,7 +35,7 @@ button {
   padding: 0.2rem;
 }
 
-button:not(:disabled) {
+button.icon:not(:disabled) {
   cursor: pointer;
 }
 
