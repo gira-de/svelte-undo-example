@@ -8,14 +8,20 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json",
+    "lint": "eslint .",
     "format": "prettier --check .",
-    "format:fix": "prettier --write ."
+    "format:fix": "prettier --write .",
+    "precommit": "pnpm check && pnpm lint && pnpm format && pnpm build"
   },
   "devDependencies": {
     "@fontsource/material-icons": "^5.0.2",
-    "@gira-de/svelte-undo": "^1.1.1",
+    "@gira-de/svelte-undo": "^1.1.0",
     "@sveltejs/vite-plugin-svelte": "^2.4.1",
     "@tsconfig/svelte": "^4.0.1",
+    "@typescript-eslint/eslint-plugin": "^6.5.0",
+    "@typescript-eslint/parser": "^6.5.0",
+    "eslint": "^8.48.0",
+    "eslint-plugin-svelte": "^2.30.0",
     "prettier": "^2.8.8",
     "prettier-plugin-svelte": "^2.10.1",
     "svelte": "^3.59.1",
