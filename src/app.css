@@ -1,38 +1,41 @@
-html,
-body {
-  height: 98%;
-  width: 98%;
-  margin: 0;
-  padding: 0;
-}
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  padding: 2%;
-}
-
-#app {
-  height: 100%;
-  width: 100%;
   margin: 0;
   padding: 0;
-}
 
-h1 {
-  font-weight: lighter;
-  font-size: 1rem;
-  margin: 1rem 0;
+  --bg-base-100: #fff;
+  --bg-base-200: #f9fafb;
+  --bg-base-300: #ced3d9;
+  --bg-base-content: #1e2734;
+  --bg-neutral: #3b424e;
+  --bg-neutral-content: #fff;
+
+  color: var(--bg-base-content);
+  background-color: var(--bg-base-100);
 }
 
 .icon {
   font-family: 'Material Icons';
 }
 
+button {
+  color: var(--bg-base-content);
+  background-color: var(--bg-base-300);
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 2px;
+}
+
+button:disabled {
+  opacity: 0.5;
+}
+
 button.icon {
   padding: 0.2rem 0.5rem;
   font-size: 1.2rem;
   border: none;
-  background-color: inherit;
+  color: inherit;
+  background: none;
   padding: 0.2rem;
 }
 
@@ -41,15 +44,12 @@ button.icon:not(:disabled) {
 }
 
 input {
-  border: 1px solid #ddd;
-  background-color: #fff;
+  border: 1px solid var(--bg-base-300);
+  background-color: var(--bg-base-100);
   border-radius: 2px;
   padding: 0.5rem;
   width: 100%;
   box-sizing: border-box;
   outline: none;
-}
-
-input:disabled {
-  background-color: #f6f6f6;
+  font: inherit;
 }
