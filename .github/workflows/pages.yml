@@ -30,7 +30,7 @@ jobs:
         run: pnpm run build --base /svelte-undo-example/
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@master
+        uses: actions/upload-artifact@v4
         with:
           name: page
           path: dist
@@ -50,16 +50,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download build artifact
-        uses: actions/download-artifact@master
+        uses: actions/download-artifact@v4
         with:
           name: page
           path: .
 
       - name: Upload page
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           path: .
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4
